@@ -1,10 +1,15 @@
-.PHONY: first-init
-first-init:
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/auth.proto
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/cart.proto
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/user.proto
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/product.proto
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/payment.proto
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/order.proto
-	cwgo server -I idl --type RPC --module Gomall --service Gomall --idl idl/checkout.proto
-	go mod tidy
+.PHONY: gen-api
+gen-api:
+	cwgo server --type HTTP --idl ../../idl/api/auth.proto --service api --module Gomall/app/api -I ../../idl
+
+.PHONY: gen-user
+gen-user:
+	@cd rpc_gen && cwgo client --type RPC --service user --module Gomall/rpc_gen -I ../idl --idl ../idl/user.proto
+	@cd app/user && cwgo server --type RPC --service user --module Gomall/app/user --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/user.proto
+
+.PHONY: gen-product
+gen-product:
+	@cd rpc_gen && cwgo client --type RPC --service product --module Gomall/rpc_gen -I ../idl --idl ../idl/product.proto
+	@cd app/pr product && cwgo server --type RPC --service product --module Gomall/app/product --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/product.proto
+
+
