@@ -7,16 +7,16 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
-type Method1Service struct {
+type VerifyTokenService struct {
 	RequestContext *app.RequestContext
 	Context        context.Context
 }
 
-func NewMethod1Service(Context context.Context, RequestContext *app.RequestContext) *Method1Service {
-	return &Method1Service{RequestContext: RequestContext, Context: Context}
+func NewVerifyTokenService(Context context.Context, RequestContext *app.RequestContext) *VerifyTokenService {
+	return &VerifyTokenService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *Method1Service) Run(req *auth.HelloReq) (resp *auth.HelloResp, err error) {
+func (h *VerifyTokenService) Run(req *auth.VerifyTokenReq) (resp *auth.VerifyResp, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

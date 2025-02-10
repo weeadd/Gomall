@@ -11,7 +11,17 @@ func rootMw() []app.HandlerFunc {
 	return nil
 }
 
-func _method1Mw() []app.HandlerFunc {
+func _authMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _delivertokenMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _verifytokenMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }

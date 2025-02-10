@@ -1,21 +1,32 @@
-syntax = "proto3";
+syntax="proto3";
 
 package api.auth;
 
-option go_package = "api/auth";
+option go_package="api/auth";
 
 import "api.proto";
 
-message HelloReq {
-   string Name = 1[(api.query)="name"];
+service AuthService {
+    rpc DeliverToken(DeliverTokenReq) returns (DeliveryResp) {
+      option (api.post) = "/auth/deliver";
+    }
+    rpc VerifyToken(VerifyTokenReq) returns (VerifyResp) {
+      option (api.post) = "/auth/verify";
+    }
 }
 
-message HelloResp {
-   string RespBody = 1;
+message DeliverTokenReq {
+    int32  user_id= 1 [(api.body) = "user_id"];
 }
 
-service HelloService {
-   rpc Method1(HelloReq) returns(HelloResp) {
-      option (api.get) = "/hello";
-   }
+message VerifyTokenReq {
+    string token = 1 [(api.body) = "token"];
+}
+
+message DeliveryResp {
+    string token = 1;
+}
+
+message VerifyResp {
+    bool res = 1;
 }

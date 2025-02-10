@@ -17,5 +17,9 @@ import (
 func Register(r *server.Hertz) {
 
 	root := r.Group("/", rootMw()...)
-	root.GET("/hello", append(_method1Mw(), auth.Method1)...)
+	{
+		_auth := root.Group("/auth", _authMw()...)
+		_auth.POST("/deliver", append(_delivertokenMw(), auth.DeliverToken)...)
+		_auth.POST("/verify", append(_verifytokenMw(), auth.VerifyToken)...)
+	}
 }

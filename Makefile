@@ -1,6 +1,6 @@
 .PHONY: gen-api
 gen-api:
-	cwgo server --type HTTP --idl ../../idl/api/auth.proto --service api --module Gomall/app/api -I ../../idl
+	cwgo server --type HTTP --idl ../../idl/api/auth_api.proto --service api --module Gomall/app/api -I ../../idl
 
 .PHONY: gen-user
 gen-user:
