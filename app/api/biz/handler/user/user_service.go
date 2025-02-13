@@ -1,11 +1,12 @@
 package user
 
 import (
-	"context"
-
 	"Gomall/app/api/biz/service"
 	"Gomall/app/api/biz/utils"
+	"context"
+
 	user "Gomall/app/api/hertz_gen/api/user"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -21,8 +22,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &user.RegisterResp{}
-	resp, err = service.NewRegisterService(ctx, c).Run(&req)
+	resp, err := service.NewRegisterService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -42,12 +42,30 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &user.LoginResp{}
-	resp, err = service.NewLoginService(ctx, c).Run(&req)
+	resp, err := service.NewLoginService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
 	}
 
+	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// Logout .
+// @router /user/logout [POST]
+func Logout(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req user.LogoutReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := service.NewLogoutService(ctx, c).Run(&req)
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
 	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }

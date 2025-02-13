@@ -13,7 +13,7 @@ service UserService {
     rpc Login(LoginReq) returns (LoginResp) {
       option (api.post) = "/user/login";
     }
-    rpc Logout(api.Empty) returns (api.Empty) {
+    rpc Logout(LogoutReq) returns (LogoutResp) {
       option (api.post) = "/user/logout";
     }
 

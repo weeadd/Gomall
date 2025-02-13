@@ -25,3 +25,8 @@ func _registerMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _logoutMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
