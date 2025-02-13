@@ -13,3 +13,8 @@ services:
       environment:
         - MYSQL_ROOT_PASSWORD=root
         - MYSQL_DATABASE=gomall
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - 6379:6379

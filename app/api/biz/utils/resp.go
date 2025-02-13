@@ -17,3 +17,9 @@ func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, d
 	// todo edit custom code
 	c.JSON(code, data)
 }
+
+func WarpResponse(ctx context.Context, c *app.RequestContext, content map[string]any) map[string]any {
+	// todo edit custom code
+	content["user_id"] = 111
+	return content
+}
