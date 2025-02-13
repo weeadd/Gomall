@@ -5,6 +5,7 @@ package main
 import (
 	"Gomall/app/api/biz/router"
 	"Gomall/app/api/conf"
+	"Gomall/app/api/infra/rpc"
 	"Gomall/app/api/middleware"
 	"context"
 	"os"
@@ -33,6 +34,9 @@ func main() {
 	// dal.Init()
 
 	_ = godotenv.Load()
+
+	rpc.Init()
+
 	address := conf.GetConf().Hertz.Address
 	h := server.New(server.WithHostPorts(address))
 

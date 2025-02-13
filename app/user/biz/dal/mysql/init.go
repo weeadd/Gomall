@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"Gomall/app/user/biz/model"
 	"Gomall/app/user/conf"
 
 	"gorm.io/driver/mysql"
@@ -19,6 +20,7 @@ func Init() {
 			SkipDefaultTransaction: true,
 		},
 	)
+	DB.AutoMigrate(&model.User{})
 	if err != nil {
 		panic(err)
 	}

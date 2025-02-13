@@ -3,6 +3,8 @@ package middleware
 import (
 	"context"
 
+	apiutils "Gomall/app/api/utils"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/sessions"
 )
@@ -14,7 +16,7 @@ const SessionUserId SessionUserIdKey = "user_id"
 func GlobalAuth() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
 		session := sessions.Default(c)
-		ctx = context.WithValue(ctx, "user_id", session.Get("user_id"))
+		ctx = context.WithValue(ctx, apiutils.SessionUserId, session.Get("user_id"))
 		c.Next(ctx)
 	}
 }

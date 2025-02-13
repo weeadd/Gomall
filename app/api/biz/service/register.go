@@ -1,9 +1,12 @@
 package service
 
 import (
+	"Gomall/app/api/infra/rpc"
 	"context"
 
 	user "Gomall/app/api/hertz_gen/api/user"
+
+	user_rpc "Gomall/rpc_gen/kitex_gen/user"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/sessions"
@@ -24,11 +27,25 @@ func (h *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
+	resp_rpc, err := rpc.UserClient.Register(h.Context, &user_rpc.RegisterReq{
+		Email:           req.Email,
+		Password:        req.Password,
+		ConfirmPassword: req.ConfirmPassword,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	session := sessions.Default(h.RequestContext)
-	session.Set("user_id", 1)
+	session.Set("user_id", resp_rpc.UserId)
 	err = session.Save()
 	if err != nil {
 		return nil, err
 	}
-	return
+
+	resp = &user.RegisterResp{
+		UserId: resp_rpc.UserId,
+	}
+
+	return resp, nil
 }
