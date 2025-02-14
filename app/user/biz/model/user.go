@@ -21,3 +21,17 @@ func GetByEmail(db *gorm.DB, email string) (*User, error) {
 	err := db.Where("email = ?", email).First(&user).Error
 	return &user, err
 }
+
+func GetById(db *gorm.DB, id int32) (*User, error) {
+	var user User
+	err := db.First(&user, id).Error
+	return &user, err
+}
+
+func DeleteById(db *gorm.DB, id int32) error {
+	return db.Delete(&User{}, id).Error
+}
+
+func UpdateById(db *gorm.DB, id int32, user *User) error {
+	return db.Model(&User{}).Where("id = ?", id).Updates(user).Error
+}
