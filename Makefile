@@ -11,5 +11,7 @@ gen-user:
 gen-product:
 	@cd rpc_gen && cwgo client --type RPC --service product --module Gomall/rpc_gen -I ../idl --idl ../idl/product.proto
 	@cd app/product product && cwgo server --type RPC --service product --module Gomall/app/product --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/product.proto
-
+gen-about_product_api:
+	@cd app/api && cwgo server -I ../../idl --type HTTP --service api --module Gomall/app/api --idl ../../idl/api/product_api.proto
+	@cd app/api && cwgo server -I ../../idl --type HTTP --service api --module Gomall/app/api --idl ../../idl/api/category_api.proto
 
