@@ -22,3 +22,10 @@ func (s *AuthServiceImpl) VerifyTokenByRPC(ctx context.Context, req *auth.Verify
 
 	return resp, err
 }
+
+// RefreshTokenByRPC implements the AuthServiceImpl interface.
+func (s *AuthServiceImpl) RefreshTokenByRPC(ctx context.Context, req *auth.RefreshTokenReq) (resp *auth.RefreshTokenResp, err error) {
+	resp, err = service.NewRefreshTokenByRPCService(ctx).Run(req)
+
+	return resp, err
+}

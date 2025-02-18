@@ -1,20 +1,24 @@
 package main
 
 import (
+	"Gomall/app/auth/biz/dal"
+	"Gomall/app/auth/conf"
+	"Gomall/rpc_gen/kitex_gen/auth/authservice"
 	"net"
 	"time"
+
+	consul "github/kitex-contrib/registry-consul"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	"Gomall/app/auth/conf"
-	"Gomall/rpc_gen/kitex_gen/auth/authservice"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func main() {
+	dal.Init()
 	opts := kitexInit()
 
 	svr := authservice.NewServer(new(AuthServiceImpl), opts...)
@@ -37,6 +41,13 @@ func kitexInit() (opts []server.Option) {
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 		ServiceName: conf.GetConf().Kitex.Service,
 	}))
+
+	// consul
+	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		klog.Fatal(err)
+	}
+	opts = append(opts, server.WithRegistry(r))
 
 	// klog
 	logger := kitexlogrus.NewLogger()

@@ -29,6 +29,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
+	"RefreshTokenByRPC": kitex.NewMethodInfo(
+		refreshTokenByRPCHandler,
+		newRefreshTokenByRPCArgs,
+		newRefreshTokenByRPCResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
 }
 
 var (
@@ -401,6 +408,159 @@ func (p *VerifyTokenByRPCResult) GetResult() interface{} {
 	return p.Success
 }
 
+func refreshTokenByRPCHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(auth.RefreshTokenReq)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(auth.AuthService).RefreshTokenByRPC(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *RefreshTokenByRPCArgs:
+		success, err := handler.(auth.AuthService).RefreshTokenByRPC(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*RefreshTokenByRPCResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newRefreshTokenByRPCArgs() interface{} {
+	return &RefreshTokenByRPCArgs{}
+}
+
+func newRefreshTokenByRPCResult() interface{} {
+	return &RefreshTokenByRPCResult{}
+}
+
+type RefreshTokenByRPCArgs struct {
+	Req *auth.RefreshTokenReq
+}
+
+func (p *RefreshTokenByRPCArgs) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetReq() {
+		p.Req = new(auth.RefreshTokenReq)
+	}
+	return p.Req.FastRead(buf, _type, number)
+}
+
+func (p *RefreshTokenByRPCArgs) FastWrite(buf []byte) (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.FastWrite(buf)
+}
+
+func (p *RefreshTokenByRPCArgs) Size() (n int) {
+	if !p.IsSetReq() {
+		return 0
+	}
+	return p.Req.Size()
+}
+
+func (p *RefreshTokenByRPCArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *RefreshTokenByRPCArgs) Unmarshal(in []byte) error {
+	msg := new(auth.RefreshTokenReq)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var RefreshTokenByRPCArgs_Req_DEFAULT *auth.RefreshTokenReq
+
+func (p *RefreshTokenByRPCArgs) GetReq() *auth.RefreshTokenReq {
+	if !p.IsSetReq() {
+		return RefreshTokenByRPCArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *RefreshTokenByRPCArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *RefreshTokenByRPCArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type RefreshTokenByRPCResult struct {
+	Success *auth.RefreshTokenResp
+}
+
+var RefreshTokenByRPCResult_Success_DEFAULT *auth.RefreshTokenResp
+
+func (p *RefreshTokenByRPCResult) FastRead(buf []byte, _type int8, number int32) (n int, err error) {
+	if !p.IsSetSuccess() {
+		p.Success = new(auth.RefreshTokenResp)
+	}
+	return p.Success.FastRead(buf, _type, number)
+}
+
+func (p *RefreshTokenByRPCResult) FastWrite(buf []byte) (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.FastWrite(buf)
+}
+
+func (p *RefreshTokenByRPCResult) Size() (n int) {
+	if !p.IsSetSuccess() {
+		return 0
+	}
+	return p.Success.Size()
+}
+
+func (p *RefreshTokenByRPCResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *RefreshTokenByRPCResult) Unmarshal(in []byte) error {
+	msg := new(auth.RefreshTokenResp)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *RefreshTokenByRPCResult) GetSuccess() *auth.RefreshTokenResp {
+	if !p.IsSetSuccess() {
+		return RefreshTokenByRPCResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *RefreshTokenByRPCResult) SetSuccess(x interface{}) {
+	p.Success = x.(*auth.RefreshTokenResp)
+}
+
+func (p *RefreshTokenByRPCResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *RefreshTokenByRPCResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -426,6 +586,16 @@ func (p *kClient) VerifyTokenByRPC(ctx context.Context, Req *auth.VerifyTokenReq
 	_args.Req = Req
 	var _result VerifyTokenByRPCResult
 	if err = p.c.Call(ctx, "VerifyTokenByRPC", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) RefreshTokenByRPC(ctx context.Context, Req *auth.RefreshTokenReq) (r *auth.RefreshTokenResp, err error) {
+	var _args RefreshTokenByRPCArgs
+	_args.Req = Req
+	var _result RefreshTokenByRPCResult
+	if err = p.c.Call(ctx, "RefreshTokenByRPC", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

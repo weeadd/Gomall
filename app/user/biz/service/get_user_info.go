@@ -23,7 +23,8 @@ func (s *GetUserInfoService) Run(req *user.UserInfoReq) (resp *user.UserInfoResp
 	}
 
 	resp = &user.UserInfoResp{
-		Email: row.Email,
+		Email:      row.Email,
+		Permission: row.Permission,
 	}
 
 	return resp, nil

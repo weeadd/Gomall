@@ -1,8 +1,9 @@
 package service
 
 import (
-	"context"
+	"Gomall/app/auth/utils"
 	auth "Gomall/rpc_gen/kitex_gen/auth"
+	"context"
 )
 
 type DeliverTokenByRPCService struct {
@@ -14,7 +15,14 @@ func NewDeliverTokenByRPCService(ctx context.Context) *DeliverTokenByRPCService 
 
 // Run create note info
 func (s *DeliverTokenByRPCService) Run(req *auth.DeliverTokenReq) (resp *auth.DeliveryResp, err error) {
-	// Finish your business logic.
+	token, err := utils.Macke(req.UserId)
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	resp = &auth.DeliveryResp{
+		Token: token,
+	}
+
+	return resp, nil
 }

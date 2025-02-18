@@ -42,6 +42,7 @@ message UserInfoReq {
 }
 message UserInfoResp {
     string email = 1;
+    string permission = 2;
 }
 
 

@@ -224,6 +224,11 @@ func (x *UserInfoResp) FastRead(buf []byte, _type int8, number int32) (offset in
 		if err != nil {
 			goto ReadFieldError
 		}
+	case 2:
+		offset, err = x.fastReadField2(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
 	default:
 		offset, err = fastpb.Skip(buf, _type, number)
 		if err != nil {
@@ -239,6 +244,11 @@ ReadFieldError:
 
 func (x *UserInfoResp) fastReadField1(buf []byte, _type int8) (offset int, err error) {
 	x.Email, offset, err = fastpb.ReadString(buf, _type)
+	return offset, err
+}
+
+func (x *UserInfoResp) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+	x.Permission, offset, err = fastpb.ReadString(buf, _type)
 	return offset, err
 }
 
@@ -496,6 +506,7 @@ func (x *UserInfoResp) FastWrite(buf []byte) (offset int) {
 		return offset
 	}
 	offset += x.fastWriteField1(buf[offset:])
+	offset += x.fastWriteField2(buf[offset:])
 	return offset
 }
 
@@ -504,6 +515,14 @@ func (x *UserInfoResp) fastWriteField1(buf []byte) (offset int) {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 1, x.GetEmail())
+	return offset
+}
+
+func (x *UserInfoResp) fastWriteField2(buf []byte) (offset int) {
+	if x.Permission == "" {
+		return offset
+	}
+	offset += fastpb.WriteString(buf[offset:], 2, x.GetPermission())
 	return offset
 }
 
@@ -724,6 +743,7 @@ func (x *UserInfoResp) Size() (n int) {
 		return n
 	}
 	n += x.sizeField1()
+	n += x.sizeField2()
 	return n
 }
 
@@ -732,6 +752,14 @@ func (x *UserInfoResp) sizeField1() (n int) {
 		return n
 	}
 	n += fastpb.SizeString(1, x.GetEmail())
+	return n
+}
+
+func (x *UserInfoResp) sizeField2() (n int) {
+	if x.Permission == "" {
+		return n
+	}
+	n += fastpb.SizeString(2, x.GetPermission())
 	return n
 }
 
@@ -841,6 +869,7 @@ var fieldIDToName_UserInfoReq = map[int32]string{
 
 var fieldIDToName_UserInfoResp = map[int32]string{
 	1: "Email",
+	2: "Permission",
 }
 
 var fieldIDToName_UpdateUserInfoReq = map[int32]string{
