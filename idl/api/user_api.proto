@@ -1,0 +1,47 @@
+syntax="proto3";
+
+package api.user;
+
+option go_package="api/user";
+
+import "api.proto";
+
+service UserService {
+    rpc Register(RegisterReq) returns (RegisterResp) {
+      option (api.post) = "/user/register";
+    }
+    rpc Login(LoginReq) returns (LoginResp) {
+      option (api.post) = "/user/login";
+    }
+    rpc Logout(LogoutReq) returns (LogoutResp) {
+      option (api.post) = "/user/logout";
+    }
+
+}
+
+message RegisterReq {
+    string email = 1 [(api.body) = "email"];
+    string password = 2 [(api.body) = "password"];
+    string confirm_password = 3 [(api.body) = "confirm_password"];
+}
+
+message RegisterResp {
+    int32 user_id = 1;
+}
+
+message LoginReq {
+    string email= 1 [(api.body) = "email"];
+    string password = 2 [(api.body) = "password"];
+}
+
+message LoginResp {
+    int32 user_id = 1;
+}
+
+message LogoutReq {
+    string token = 1 [(api.body) = "token"];
+}
+
+message LogoutResp {
+    bool res=1;
+}

@@ -3,6 +3,8 @@ package utils
 import (
 	"context"
 
+	apiutils "Gomall/app/api/utils"
+
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -16,4 +18,10 @@ func SendErrResponse(ctx context.Context, c *app.RequestContext, code int, err e
 func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, data interface{}) {
 	// todo edit custom code
 	c.JSON(code, data)
+}
+
+func WarpResponse(ctx context.Context, c *app.RequestContext, content map[string]any) map[string]any {
+	// todo edit custom code
+	content["user_id"] = apiutils.GetUserIdFromCtx(ctx)
+	return content
 }

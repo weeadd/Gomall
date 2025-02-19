@@ -4,7 +4,11 @@ import (
 	"context"
 
 	product "Gomall/app/api/hertz_gen/api/product"
+	"Gomall/app/api/infra/rpc"
+	rpcproduct "Gomall/rpc_gen/kitex_gen/product"
+
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 )
 
 type SearchProductService struct {
@@ -16,11 +20,15 @@ func NewSearchProductService(Context context.Context, RequestContext *app.Reques
 	return &SearchProductService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *SearchProductService) Run(req *product.SearchProductReq) (resp *product.Empty, err error) {
-	//defer func() {
-	// hlog.CtxInfof(h.Context, "req = %+v", req)
-	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
-	//}()
-	// todo edit your code
-	return
+func (h *SearchProductService) Run(req *product.SearchProductReq) (resp map[string]any, err error) {
+	products, err := rpc.ProductClient.SearchProducts(h.Context, &rpcproduct.SearchProductsReq{
+		Query: req.Q,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return utils.H{
+		"items": products.Results,
+		"q": req.Q,
+	}, nil
 }

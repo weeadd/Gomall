@@ -6,6 +6,7 @@ import (
 	"Gomall/app/api/biz/service"
 	"Gomall/app/api/biz/utils"
 	category "Gomall/app/api/hertz_gen/api/category"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -21,8 +22,7 @@ func Category(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &category.Empty{}
-	resp, err = service.NewCategoryService(ctx, c).Run(&req)
+	resp, err := service.NewCategoryService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

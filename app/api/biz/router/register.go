@@ -6,6 +6,7 @@ import (
 	auth "Gomall/app/api/biz/router/auth"
 	category "Gomall/app/api/biz/router/category"
 	product "Gomall/app/api/biz/router/product"
+	user "Gomall/app/api/biz/router/user"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -15,6 +16,8 @@ func GeneratedRegister(r *server.Hertz) {
 	category.Register(r)
 
 	product.Register(r)
+
+	user.Register(r)
 
 	auth.Register(r)
 }
