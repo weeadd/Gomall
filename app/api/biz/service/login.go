@@ -9,7 +9,6 @@ import (
 	user_rpc "Gomall/rpc_gen/kitex_gen/user"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/hertz-contrib/sessions"
 )
 
 type LoginService struct {
@@ -26,13 +25,6 @@ func (h *LoginService) Run(req *user.LoginReq) (resp *user.LoginResp, err error)
 		Email:    req.Email,
 		Password: req.Password,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	session := sessions.Default(h.RequestContext)
-	session.Set("user_id", resp_rpc.UserId)
-	err = session.Save()
 	if err != nil {
 		return nil, err
 	}
