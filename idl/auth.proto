@@ -20,6 +20,7 @@ message VerifyTokenReq {
 
 message RefreshTokenReq {
     int32 user_id = 1;
+    string token = 2;
 }
 
 

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"Gomall/app/auth/utils"
 	auth "Gomall/rpc_gen/kitex_gen/auth"
 	"context"
 )
@@ -14,5 +15,19 @@ func NewRefreshTokenByRPCService(ctx context.Context) *RefreshTokenByRPCService 
 
 // Run create note info
 func (s *RefreshTokenByRPCService) Run(req *auth.RefreshTokenReq) (resp *auth.RefreshTokenResp, err error) {
-	return
+	res, err := utils.ParseToken(req.Token)
+	if !res {
+		return nil, err
+	}
+
+	token, err := utils.Macke(req.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	resp = &auth.RefreshTokenResp{
+		Token: token,
+	}
+
+	return resp, nil
 }
