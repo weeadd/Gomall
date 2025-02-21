@@ -3,6 +3,8 @@
 package user
 
 import (
+	"Gomall/app/api/middleware"
+
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -23,17 +25,20 @@ func _loginMw() []app.HandlerFunc {
 
 func _registerMw() []app.HandlerFunc {
 	// your code...
+
 	return nil
 }
 
 func _logoutMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	middlewares := make([]app.HandlerFunc, 0)
+	middlewares = append(middlewares, middleware.Auth())
+	return middlewares
 }
 
 func _deleteuserMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	middlewares := make([]app.HandlerFunc, 0)
+	middlewares = append(middlewares, middleware.Auth())
+	return middlewares
 }
 
 func _getuserinfoMw() []app.HandlerFunc {

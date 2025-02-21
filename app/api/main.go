@@ -6,7 +6,6 @@ import (
 	"Gomall/app/api/biz/router"
 	"Gomall/app/api/conf"
 	"Gomall/app/api/infra/rpc"
-	"Gomall/app/api/middleware"
 	"context"
 	"os"
 	"time"
@@ -97,5 +96,5 @@ func registerMiddleware(h *server.Hertz) {
 	h.Use(cors.Default())
 
 	// middleware
-	middleware.Register(h)
+	// middleware.Register(h)
 }

@@ -1,34 +1,41 @@
 package middleware
 
 import (
+	"Gomall/app/api/biz/utils"
+	"Gomall/app/api/infra/rpc"
+	auth_rpc "Gomall/rpc_gen/kitex_gen/auth"
 	"context"
-
-	apiutils "Gomall/app/api/utils"
+	"errors"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/hertz-contrib/sessions"
+	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
-
-type SessionUserIdKey string
-
-const SessionUserId SessionUserIdKey = "user_id"
-
-func GlobalAuth() app.HandlerFunc {
-	return func(ctx context.Context, c *app.RequestContext) {
-		session := sessions.Default(c)
-		ctx = context.WithValue(ctx, apiutils.SessionUserId, session.Get("user_id"))
-		c.Next(ctx)
-	}
-}
 
 func Auth() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		session := sessions.Default(c)
-		userId := session.Get("user_id")
-		if userId == nil {
-			c.JSON(401, "Unauthorized")
+		token := c.Query("token")
+
+		if token == "" {
+			utils.SendErrResponse(ctx, c, consts.StatusOK, errors.New("Token is required"))
+			c.Abort()
 			return
 		}
+
+		resp_rpc, err := rpc.AuthClient.VerifyTokenByRPC(ctx, &auth_rpc.VerifyTokenReq{
+			Token: token,
+		})
+		if err != nil {
+			utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+			c.Abort()
+			return
+		}
+
+		if !resp_rpc.Res {
+			utils.SendErrResponse(ctx, c, consts.StatusOK, errors.New("Invalid Token"))
+			c.Abort()
+			return
+		}
+
 		c.Next(ctx)
 	}
 }

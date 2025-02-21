@@ -32,7 +32,7 @@ func GetById(db *gorm.DB, id int32) (*User, error) {
 }
 
 func DeleteById(db *gorm.DB, id int32) error {
-	return db.Delete(&User{}, id).Error
+	return db.Unscoped().Delete(&User{}, id).Error
 }
 
 func UpdateById(db *gorm.DB, id int32, user *User) error {
