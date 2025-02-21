@@ -31,6 +31,7 @@ func (h *LoginService) Run(req *user.LoginReq) (resp *user.LoginResp, err error)
 
 	resp = &user.LoginResp{
 		UserId: resp_rpc.UserId,
+		Token:  resp_rpc.Token,
 	}
 
 	return resp, nil

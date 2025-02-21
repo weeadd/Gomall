@@ -15,12 +15,12 @@ func NewRefreshTokenByRPCService(ctx context.Context) *RefreshTokenByRPCService 
 
 // Run create note info
 func (s *RefreshTokenByRPCService) Run(req *auth.RefreshTokenReq) (resp *auth.RefreshTokenResp, err error) {
-	res, err := utils.ParseToken(req.Token)
-	if !res {
+	_, err = utils.ParseToken(req.Token)
+	if err != nil {
 		return nil, err
 	}
 
-	token, err := utils.Macke(req.UserId)
+	token, err := utils.GenerateToken(req.UserId)
 	if err != nil {
 		return nil, err
 	}

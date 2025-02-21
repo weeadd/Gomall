@@ -2,33 +2,40 @@ package utils
 
 import (
 	"errors"
+	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
-func Macke(UserId int32) (token string, err error) {
-	customClaim, err := NewCustomClaims(UserId)
-	if err != nil {
-		return "", err
-	}
-	then := jwt.NewWithClaims(jwt.SigningMethodES256, customClaim)
-	token, err = then.SignedString([]byte("gettoken"))
-	return
+var stSignKey = []byte("getttoken")
+
+type JwtCustomClaims struct {
+	UserId int32
+	jwt.RegisteredClaims
 }
 
-func secret() jwt.Keyfunc {
-	return func(t *jwt.Token) (interface{}, error) {
-		return []byte("gettoken"), nil
+func GenerateToken(UserId int32) (string, error) {
+	iJwtCustomClaims := JwtCustomClaims{
+		UserId: UserId,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 5)),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+			Subject:   "Token",
+		},
 	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, iJwtCustomClaims)
+	return token.SignedString(stSignKey)
 }
 
-func ParseToken(token string) (bool, error) {
-	tokn, err := jwt.Parse(token, secret())
-	if err != nil {
-		return false, errors.New("Fail to parse token")
+func ParseToken(tokenStr string) (JwtCustomClaims, error) {
+	iJwtCustomClaims := JwtCustomClaims{}
+	token, err := jwt.ParseWithClaims(tokenStr, &iJwtCustomClaims, func(token *jwt.Token) (interface{}, error) {
+		return stSignKey, nil
+	})
+
+	if err != nil && !token.Valid {
+		err = errors.New("invalid token")
 	}
-	if !tokn.Valid {
-		return false, errors.New("Token is invalid")
-	}
-	return true, nil
+	return iJwtCustomClaims, err
 }

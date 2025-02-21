@@ -5,7 +5,6 @@ import (
 	"Gomall/app/user/biz/model"
 	user "Gomall/rpc_gen/kitex_gen/user"
 	"context"
-	"errors"
 
 	"gorm.io/gorm"
 )
@@ -19,10 +18,6 @@ func NewUpdateUserInfoService(ctx context.Context) *UpdateUserInfoService {
 
 // Run create note info
 func (s *UpdateUserInfoService) Run(req *user.UpdateUserInfoReq) (resp *user.UpdateUserInfoResp, err error) {
-	if req.Email == "" {
-		return nil, errors.New("Email is empty")
-	}
-
 	_, err = model.GetById(mysql.DB, req.UserId)
 
 	if err != nil && err != gorm.ErrRecordNotFound {
@@ -37,7 +32,7 @@ func (s *UpdateUserInfoService) Run(req *user.UpdateUserInfoReq) (resp *user.Upd
 	}
 
 	new_user_info := model.User{
-		Email: req.Email,
+		Description: req.Description,
 	}
 	err = model.UpdateById(mysql.DB, req.UserId, &new_user_info)
 	if err != nil {

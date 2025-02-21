@@ -1,13 +1,12 @@
 package main
 
 import (
-	"Gomall/app/auth/biz/dal"
 	"Gomall/app/auth/conf"
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
 	"net"
 	"time"
 
-	consul "github/kitex-contrib/registry-consul"
+	consul "github.com/kitex-contrib/registry-consul"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -18,7 +17,7 @@ import (
 )
 
 func main() {
-	dal.Init()
+	//	dal.Init()
 	opts := kitexInit()
 
 	svr := authservice.NewServer(new(AuthServiceImpl), opts...)

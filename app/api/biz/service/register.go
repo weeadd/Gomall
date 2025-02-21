@@ -9,7 +9,6 @@ import (
 	user_rpc "Gomall/rpc_gen/kitex_gen/user"
 
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/hertz-contrib/sessions"
 )
 
 type RegisterService struct {
@@ -31,14 +30,10 @@ func (h *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 		Email:           req.Email,
 		Password:        req.Password,
 		ConfirmPassword: req.ConfirmPassword,
+		Permission:      req.Permission,
+		Role:            req.Role,
+		Description:     req.Description,
 	})
-	if err != nil {
-		return nil, err
-	}
-
-	session := sessions.Default(h.RequestContext)
-	session.Set("user_id", resp_rpc.UserId)
-	err = session.Save()
 	if err != nil {
 		return nil, err
 	}

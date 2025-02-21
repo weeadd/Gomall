@@ -17,6 +17,9 @@ message RegisterReq {
     string email = 1;
     string password = 2;
     string confirm_password = 3;
+    string permission = 4;
+    string role = 5;
+    string description = 6;
 }
 message RegisterResp {
     int32 user_id = 1;
@@ -28,6 +31,7 @@ message LoginReq {
 }
 message LoginResp {
     int32 user_id = 1;
+    string token = 2;
 }
 
 message LogoutReq {
@@ -43,12 +47,14 @@ message UserInfoReq {
 message UserInfoResp {
     string email = 1;
     string permission = 2;
+    string role = 3;
+    string description = 4;
 }
 
 
 message UpdateUserInfoReq {
     int32 user_id = 1;
-    string email = 2;
+    string description = 2;
 }
 message UpdateUserInfoResp {
     bool res = 1;

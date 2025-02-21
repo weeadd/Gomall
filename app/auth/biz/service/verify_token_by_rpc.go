@@ -17,8 +17,8 @@ func NewVerifyTokenByRPCService(ctx context.Context) *VerifyTokenByRPCService {
 func (s *VerifyTokenByRPCService) Run(req *auth.VerifyTokenReq) (resp *auth.VerifyResp, err error) {
 	resp = &auth.VerifyResp{}
 
-	res, err := utils.ParseToken(req.Token)
-	if !res {
+	_, err = utils.ParseToken(req.Token)
+	if err != nil {
 		resp.Res = false
 		return resp, err
 	}

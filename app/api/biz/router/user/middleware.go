@@ -30,3 +30,18 @@ func _logoutMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _deleteuserMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getuserinfoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _updateuserinfoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

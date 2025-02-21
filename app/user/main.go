@@ -3,6 +3,7 @@ package main
 import (
 	"Gomall/app/user/biz/dal"
 	"Gomall/app/user/conf"
+	"Gomall/app/user/infra/rpc"
 	"Gomall/rpc_gen/kitex_gen/user/userservice"
 	"net"
 	"time"
@@ -18,6 +19,8 @@ import (
 
 func main() {
 	dal.Init()
+
+	rpc.Init()
 
 	opts := kitexInit()
 
