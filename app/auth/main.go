@@ -2,11 +2,11 @@ package main
 
 import (
 	"Gomall/app/auth/conf"
+	"Gomall/common/mtl"
+	"Gomall/common/serversuite"
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
 	"net"
 	"time"
-
-	consul "github.com/kitex-contrib/registry-consul"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -16,8 +16,15 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
+
 func main() {
 	//	dal.Init()
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
+
 	opts := kitexInit()
 
 	svr := authservice.NewServer(new(AuthServiceImpl), opts...)
@@ -42,11 +49,10 @@ func kitexInit() (opts []server.Option) {
 	}))
 
 	// consul
-	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		klog.Fatal(err)
-	}
-	opts = append(opts, server.WithRegistry(r))
+	opts = append(opts, server.WithServiceAddr(addr), server.WithSuite(serversuite.CommonServerSuite{
+		CurrentServiceName: ServiceName,
+		RegistryAddr:       RegistryAddr,
+	}))
 
 	// klog
 	logger := kitexlogrus.NewLogger()
