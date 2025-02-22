@@ -3,16 +3,19 @@ package rpc
 import (
 	"Gomall/app/user/conf"
 	"Gomall/app/user/utils"
+	"Gomall/common/clientsuite"
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
 	"sync"
 
 	"github.com/cloudwego/kitex/client"
-	consul "github.com/kitex-contrib/registry-consul"
 )
 
 var (
-	AuthClient authservice.Client
-	once       sync.Once
+	AuthClient   authservice.Client
+	once         sync.Once
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+	err          error
 )
 
 func Init() {
@@ -22,9 +25,13 @@ func Init() {
 }
 
 func initClient() {
-	r, err := consul.NewConsulResolver(conf.GetConf().Registry.RegistryAddress[0])
-	utils.MustHandleError(err)
+	opts := []client.Option{
+		client.WithSuite(clientsuite.CommonClientSuite{
+			CurrentServiceName: ServiceName,
+			RegistryAddr:       RegistryAddr,
+		}),
+	}
 
-	AuthClient, err = authservice.NewClient("auth", client.WithResolver(r))
+	AuthClient, err = authservice.NewClient("auth", opts...)
 	utils.MustHandleError(err)
 }
