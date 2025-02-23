@@ -5,7 +5,20 @@ services:
     ports:
       - 8500:8500
 
-  redis:
-    image: "redis:latest"
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ../deploy/config/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
-      - 6379:6379
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
