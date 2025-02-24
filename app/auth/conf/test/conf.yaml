@@ -1,5 +1,5 @@
 kitex:
-  service: "user"
+  service: "auth"
   address: ":8890"
   metrics_port: ":9994"
   log_level: info

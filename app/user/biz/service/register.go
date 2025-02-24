@@ -41,6 +41,7 @@ func (s *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 
 	passwordHashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
+		return nil, errors.New("Password hash error")
 	}
 
 	newUser := &model.User{
@@ -55,7 +56,6 @@ func (s *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 	if err != nil {
 		return nil, err
 	}
-
 
 	return &user.RegisterResp{UserId: int32(newUser.ID)}, nil
 }

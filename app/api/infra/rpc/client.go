@@ -4,10 +4,9 @@ import (
 	"Gomall/app/api/conf"
 	apiutils "Gomall/app/api/utils"
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
+	"Gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"Gomall/rpc_gen/kitex_gen/user/userservice"
 	"sync"
-
-	"Gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 
 	"github.com/cloudwego/kitex/client"
 	consul "github.com/kitex-contrib/registry-consul"
