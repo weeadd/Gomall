@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	auth "Gomall/app/api/hertz_gen/api/auth"
 
@@ -23,6 +24,8 @@ func (h *DeliverTokenService) Run(req *auth.DeliverTokenReq) (resp *auth.Deliver
 	//hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
+	fmt.Println(req.UserId)
+
 	resp = &auth.DeliveryResp{}
 
 	resp.Token = "ok"

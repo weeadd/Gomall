@@ -24,3 +24,39 @@ func Login(ctx context.Context, req *user.LoginReq, callOptions ...callopt.Optio
 	}
 	return resp, nil
 }
+
+func Logout(ctx context.Context, req *user.LogoutReq, callOptions ...callopt.Option) (resp *user.LogoutResp, err error) {
+	resp, err = defaultClient.Logout(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "Logout call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func GetUserInfo(ctx context.Context, req *user.UserInfoReq, callOptions ...callopt.Option) (resp *user.UserInfoResp, err error) {
+	resp, err = defaultClient.GetUserInfo(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "GetUserInfo call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func UpdateUserInfo(ctx context.Context, req *user.UpdateUserInfoReq, callOptions ...callopt.Option) (resp *user.UpdateUserInfoResp, err error) {
+	resp, err = defaultClient.UpdateUserInfo(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "UpdateUserInfo call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func DeleteUser(ctx context.Context, req *user.DeleteUserReq, callOptions ...callopt.Option) (resp *user.DeleteUserResp, err error) {
+	resp, err = defaultClient.DeleteUser(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "DeleteUser call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}

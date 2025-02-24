@@ -3,11 +3,15 @@
 package main
 
 import (
-	"context"
-	"time"
-
 	"Gomall/app/api/biz/router"
 	"Gomall/app/api/conf"
+	"Gomall/app/api/infra/rpc"
+	apiutils "Gomall/app/api/utils"
+	"Gomall/common/mtl"
+	"context"
+	"os"
+	"time"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -18,17 +22,37 @@ import (
 	"github.com/hertz-contrib/gzip"
 	"github.com/hertz-contrib/logger/accesslog"
 	hertzlogrus "github.com/hertz-contrib/logger/logrus"
+	prometheus "github.com/hertz-contrib/monitor-prometheus"
 	"github.com/hertz-contrib/pprof"
+	"github.com/hertz-contrib/sessions"
+	"github.com/hertz-contrib/sessions/redis"
+	"github.com/joho/godotenv"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+)
+
+var (
+	ServiceName  = apiutils.ServiceName
+	MetricsPort  = conf.GetConf().Hertz.MetricsPort
+	RegistryAddr = conf.GetConf().Hertz.RegistryAddr
 )
 
 func main() {
 	// init dal
 	// dal.Init()
-	address := conf.GetConf().Hertz.Address
-	h := server.New(server.WithHostPorts(address))
 
+	_ = godotenv.Load()
+
+	consul, registryInfo := mtl.InitMetric(ServiceName, MetricsPort, RegistryAddr)
+	defer consul.Deregister(registryInfo)
+	rpc.Init()
+
+	address := conf.GetConf().Hertz.Address
+	h := server.New(server.WithHostPorts(address),
+		server.WithTracer(prometheus.NewServerTracer("", "", prometheus.WithDisableServer(true),
+			prometheus.WithRegistry(mtl.Registry),
+		)),
+	)
 	registerMiddleware(h)
 
 	// add a ping route to test
@@ -42,6 +66,10 @@ func main() {
 }
 
 func registerMiddleware(h *server.Hertz) {
+	// redis
+	store, _ := redis.NewStore(10, "tcp", conf.GetConf().Redis.Address, "", []byte(os.Getenv("SESSION_SECRET")))
+	h.Use(sessions.New("Gomall", store))
+
 	// log
 	logger := hertzlogrus.NewLogger()
 	hlog.SetLogger(logger)
@@ -80,4 +108,7 @@ func registerMiddleware(h *server.Hertz) {
 
 	// cores
 	h.Use(cors.Default())
+
+	// middleware
+	// middleware.Register(h)
 }

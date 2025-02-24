@@ -100,6 +100,34 @@ SkipFieldError:
 	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
 }
 
+<<<<<<< HEAD
+=======
+func (x *EmptyCartReq) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
+	switch number {
+	case 1:
+		offset, err = x.fastReadField1(buf, _type)
+		if err != nil {
+			goto ReadFieldError
+		}
+	default:
+		offset, err = fastpb.Skip(buf, _type, number)
+		if err != nil {
+			goto SkipFieldError
+		}
+	}
+	return offset, nil
+SkipFieldError:
+	return offset, fmt.Errorf("%T cannot parse invalid wire-format data, error: %s", x, err)
+ReadFieldError:
+	return offset, fmt.Errorf("%T read field %d '%s' error: %s", x, number, fieldIDToName_EmptyCartReq[number], err)
+}
+
+func (x *EmptyCartReq) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+	x.UserId, offset, err = fastpb.ReadUint32(buf, _type)
+	return offset, err
+}
+
+>>>>>>> main
 func (x *GetCartReq) FastRead(buf []byte, _type int8, number int32) (offset int, err error) {
 	switch number {
 	case 1:
@@ -146,12 +174,20 @@ ReadFieldError:
 }
 
 func (x *GetCartResp) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	var v CartItem
+=======
+	var v Cart
+>>>>>>> main
 	offset, err = fastpb.ReadMessage(buf, _type, &v)
 	if err != nil {
 		return offset, err
 	}
+<<<<<<< HEAD
 	x.Items = append(x.Items, &v)
+=======
+	x.Cart = &v
+>>>>>>> main
 	return offset, nil
 }
 
@@ -431,6 +467,22 @@ func (x *AddItemResp) Size() (n int) {
 	return n
 }
 
+func (x *EmptyCartReq) Size() (n int) {
+	if x == nil {
+		return n
+	}
+	n += x.sizeField1()
+	return n
+}
+
+func (x *EmptyCartReq) sizeField1() (n int) {
+	if x.UserId == 0 {
+		return n
+	}
+	n += fastpb.SizeUint32(1, x.GetUserId())
+	return n
+}
+
 func (x *GetCartReq) Size() (n int) {
 	if x == nil {
 		return n
@@ -526,6 +578,10 @@ var fieldIDToName_AddItemReq = map[int32]string{
 }
 
 var fieldIDToName_AddItemResp = map[int32]string{}
+
+var fieldIDToName_EmptyCartReq = map[int32]string{
+	1: "UserId",
+}
 
 var fieldIDToName_GetCartReq = map[int32]string{
 	1: "UserId",
