@@ -31,6 +31,8 @@ func (s *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 	}
 
 	if req.Role != "admin" && req.Role != "user" {
+		return nil, errors.New("Role not match")
+	}
 
 	_, err = model.GetByEmail(mysql.DB, req.Email)
 	if err != gorm.ErrRecordNotFound {
@@ -53,6 +55,7 @@ func (s *RegisterService) Run(req *user.RegisterReq) (resp *user.RegisterResp, e
 	if err != nil {
 		return nil, err
 	}
+
 
 	return &user.RegisterResp{UserId: int32(newUser.ID)}, nil
 }
