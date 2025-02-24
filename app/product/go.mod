@@ -4,11 +4,13 @@ go 1.23.6
 
 replace Gomall/rpc_gen => ../../rpc_gen
 
+replace Gomall/common => ../../common/
+
 require (
 	github.com/cloudwego/kitex v0.12.1
 	github.com/joho/godotenv v1.5.1
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20241120035129-55da83caab1b
-	github.com/kitex-contrib/registry-consul v0.0.0-20230406075225-7d341f036654
+	github.com/kitex-contrib/registry-consul v0.1.0 // indirect
 	github.com/kr/pretty v0.3.1
 	github.com/redis/go-redis/v9 v9.7.0
 	go.uber.org/zap v1.27.0
@@ -22,6 +24,16 @@ require (
 require github.com/cloudwego/biz-demo/gomall/app/product v0.0.0-20250107114945-cd595cc0e3ad
 
 require (
+	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/kitex-contrib/monitor-prometheus v0.2.0 // indirect
+	github.com/prometheus/client_golang v1.19.0 // indirect
+	github.com/prometheus/client_model v0.5.0 // indirect
+	github.com/prometheus/common v0.48.0 // indirect
+	github.com/prometheus/procfs v0.12.0 // indirect
+)
+
+require (
+	Gomall/common v0.0.0-00010101000000-000000000000
 	Gomall/rpc_gen v0.0.0-00010101000000-000000000000
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/bytedance/gopkg v0.1.1 // indirect
@@ -49,7 +61,7 @@ require (
 	github.com/hashicorp/consul/api v1.26.1 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-hclog v1.6.2 // indirect
+	github.com/hashicorp/go-hclog v1.6.3 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
