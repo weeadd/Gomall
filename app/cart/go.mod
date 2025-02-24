@@ -15,7 +15,6 @@ require (
 	Gomall/rpc_gen v0.0.0
 	github.com/cloudwego/kitex v0.12.2
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20241120035129-55da83caab1b
-	github.com/kitex-contrib/registry-consul v0.1.0
 	github.com/kr/pretty v0.3.1
 	github.com/redis/go-redis/v9 v9.7.0
 	go.uber.org/zap v1.27.0
@@ -30,6 +29,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/kitex-contrib/monitor-prometheus v0.2.0 // indirect
+	github.com/kitex-contrib/registry-consul v0.1.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/prometheus/client_golang v1.14.0 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
