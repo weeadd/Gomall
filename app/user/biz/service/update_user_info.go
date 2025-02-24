@@ -24,13 +24,6 @@ func (s *UpdateUserInfoService) Run(req *user.UpdateUserInfoReq) (resp *user.Upd
 		return nil, err
 	}
 
-	if err == nil {
-		resp = &user.UpdateUserInfoResp{
-			Res: false,
-		}
-		return resp, nil
-	}
-
 	new_user_info := model.User{
 		Description: req.Description,
 	}
