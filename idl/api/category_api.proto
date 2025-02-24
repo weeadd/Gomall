@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package api.category;
+
+import "api.proto";
+
+option go_package = "/api/category";
+
+service CategoryService {
+    rpc Category(CategoryReq) returns (Empty) {
+        option (api.post) = "/category/:category";
+    }
+}
+
+message CategoryReq {
+    string category = 1[ (api.path) = "category"];
+}
+
+message Empty {}
