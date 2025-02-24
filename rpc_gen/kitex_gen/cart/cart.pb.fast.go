@@ -171,12 +171,12 @@ ReadFieldError:
 }
 
 func (x *GetCartResp) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	var v Cart
+	var v CartItem
 	offset, err = fastpb.ReadMessage(buf, _type, &v)
 	if err != nil {
 		return offset, err
 	}
-	x.Cart = &v
+	x.Items = append(x.Items, &v)
 	return offset, nil
 }
 
@@ -290,22 +290,6 @@ func (x *AddItemResp) FastWrite(buf []byte) (offset int) {
 	return offset
 }
 
-func (x *EmptyCartReq) FastWrite(buf []byte) (offset int) {
-	if x == nil {
-		return offset
-	}
-	offset += x.fastWriteField1(buf[offset:])
-	return offset
-}
-
-func (x *EmptyCartReq) fastWriteField1(buf []byte) (offset int) {
-	if x.UserId == 0 {
-		return offset
-	}
-	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
-	return offset
-}
-
 func (x *GetCartReq) FastWrite(buf []byte) (offset int) {
 	if x == nil {
 		return offset
@@ -331,10 +315,12 @@ func (x *GetCartResp) FastWrite(buf []byte) (offset int) {
 }
 
 func (x *GetCartResp) fastWriteField1(buf []byte) (offset int) {
-	if x.Cart == nil {
+	if x.Items == nil {
 		return offset
 	}
-	offset += fastpb.WriteMessage(buf[offset:], 1, x.GetCart())
+	for i := range x.GetItems() {
+		offset += fastpb.WriteMessage(buf[offset:], 1, x.GetItems()[i])
+	}
 	return offset
 }
 
@@ -362,6 +348,22 @@ func (x *Cart) fastWriteField2(buf []byte) (offset int) {
 	for i := range x.GetItems() {
 		offset += fastpb.WriteMessage(buf[offset:], 2, x.GetItems()[i])
 	}
+	return offset
+}
+
+func (x *EmptyCartReq) FastWrite(buf []byte) (offset int) {
+	if x == nil {
+		return offset
+	}
+	offset += x.fastWriteField1(buf[offset:])
+	return offset
+}
+
+func (x *EmptyCartReq) fastWriteField1(buf []byte) (offset int) {
+	if x.UserId == 0 {
+		return offset
+	}
+	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
 	return offset
 }
 
@@ -470,10 +472,12 @@ func (x *GetCartResp) Size() (n int) {
 }
 
 func (x *GetCartResp) sizeField1() (n int) {
-	if x.Cart == nil {
+	if x.Items == nil {
 		return n
 	}
-	n += fastpb.SizeMessage(1, x.GetCart())
+	for i := range x.GetItems() {
+		n += fastpb.SizeMessage(1, x.GetItems()[i])
+	}
 	return n
 }
 
@@ -523,21 +527,22 @@ var fieldIDToName_AddItemReq = map[int32]string{
 
 var fieldIDToName_AddItemResp = map[int32]string{}
 
-var fieldIDToName_EmptyCartReq = map[int32]string{
-	1: "UserId",
-}
 
 var fieldIDToName_GetCartReq = map[int32]string{
 	1: "UserId",
 }
 
 var fieldIDToName_GetCartResp = map[int32]string{
-	1: "Cart",
+	1: "Items",
 }
 
 var fieldIDToName_Cart = map[int32]string{
 	1: "UserId",
 	2: "Items",
+}
+
+var fieldIDToName_EmptyCartReq = map[int32]string{
+	1: "UserId",
 }
 
 var fieldIDToName_EmptyCartResp = map[int32]string{}

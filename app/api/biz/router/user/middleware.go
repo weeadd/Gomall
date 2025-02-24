@@ -25,7 +25,6 @@ func _loginMw() []app.HandlerFunc {
 
 func _registerMw() []app.HandlerFunc {
 	// your code...
-
 	return nil
 }
 

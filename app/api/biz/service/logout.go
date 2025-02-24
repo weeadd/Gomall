@@ -23,6 +23,5 @@ func (h *LogoutService) Run(req *user.LogoutReq) (resp *user.LogoutResp, err err
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-
 	return
 }
