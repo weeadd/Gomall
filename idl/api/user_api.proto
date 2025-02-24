@@ -16,6 +16,15 @@ service UserService {
     rpc Logout(LogoutReq) returns (LogoutResp) {
       option (api.post) = "/user/logout";
     }
+    rpc GetUserInfo(UserInfoReq) returns (UserInfoResp) {
+      option (api.post) = "/user/info";
+    }
+    rpc UpdateUserInfo(UpdateReq) returns (UpdateResp) {
+      option (api.post) = "/user/update";
+    }
+    rpc DeleteUser(DeleteReq) returns (DeleteResp) {
+      option (api.post) = "/user/delete";
+    }
 
 }
 
@@ -23,8 +32,10 @@ message RegisterReq {
     string email = 1 [(api.body) = "email"];
     string password = 2 [(api.body) = "password"];
     string confirm_password = 3 [(api.body) = "confirm_password"];
+    string permission = 4 [(api.body) = "permission"];
+    string role = 5 [(api.body) = "role"];
+    string description = 6 [(api.body) = "description"];
 }
-
 message RegisterResp {
     int32 user_id = 1;
 }
@@ -33,15 +44,40 @@ message LoginReq {
     string email= 1 [(api.body) = "email"];
     string password = 2 [(api.body) = "password"];
 }
-
 message LoginResp {
     int32 user_id = 1;
+    string token = 2;
 }
 
 message LogoutReq {
-    string token = 1 [(api.body) = "token"];
+    int32 user_id = 1 [(api.body) = "user_id"];
 }
-
 message LogoutResp {
     bool res=1;
 }
+
+message UserInfoReq {
+    int32 user_id = 1 [(api.body) = "user_id"];
+}
+message UserInfoResp {
+    string email = 1;
+    string permission = 2;
+    string role = 3;
+    string description = 4;
+}
+
+message UpdateReq {
+  int32 user_id = 1 [(api.body) = "user_id"];
+  string description = 2 [(api.body) = "description"];
+}
+message UpdateResp {
+  bool res = 1;
+}
+
+message DeleteReq {
+  int32 user_id = 1 [(api.body) = "user_id"];
+}
+message DeleteResp {
+  bool res = 1;
+}
+

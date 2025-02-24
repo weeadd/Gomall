@@ -6,7 +6,8 @@ import (
 	"Gomall/app/api/biz/router"
 	"Gomall/app/api/conf"
 	"Gomall/app/api/infra/rpc"
-	"Gomall/app/api/middleware"
+	apiutils "Gomall/app/api/utils"
+	"Gomall/common/mtl"
 	"context"
 	"os"
 	"time"
@@ -21,6 +22,7 @@ import (
 	"github.com/hertz-contrib/gzip"
 	"github.com/hertz-contrib/logger/accesslog"
 	hertzlogrus "github.com/hertz-contrib/logger/logrus"
+	prometheus "github.com/hertz-contrib/monitor-prometheus"
 	"github.com/hertz-contrib/pprof"
 	"github.com/hertz-contrib/sessions"
 	"github.com/hertz-contrib/sessions/redis"
@@ -29,17 +31,28 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = apiutils.ServiceName
+	MetricsPort  = conf.GetConf().Hertz.MetricsPort
+	RegistryAddr = conf.GetConf().Hertz.RegistryAddr
+)
+
 func main() {
 	// init dal
 	// dal.Init()
 
 	_ = godotenv.Load()
 
+	consul, registryInfo := mtl.InitMetric(ServiceName, MetricsPort, RegistryAddr)
+	defer consul.Deregister(registryInfo)
 	rpc.Init()
 
 	address := conf.GetConf().Hertz.Address
-	h := server.New(server.WithHostPorts(address))
-
+	h := server.New(server.WithHostPorts(address),
+		server.WithTracer(prometheus.NewServerTracer("", "", prometheus.WithDisableServer(true),
+			prometheus.WithRegistry(mtl.Registry),
+		)),
+	)
 	registerMiddleware(h)
 
 	// add a ping route to test
@@ -97,5 +110,5 @@ func registerMiddleware(h *server.Hertz) {
 	h.Use(cors.Default())
 
 	// middleware
-	middleware.Register(h)
+	// middleware.Register(h)
 }

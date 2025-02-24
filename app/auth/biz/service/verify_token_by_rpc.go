@@ -1,8 +1,9 @@
 package service
 
 import (
-	"context"
+	"Gomall/app/auth/utils"
 	auth "Gomall/rpc_gen/kitex_gen/auth"
+	"context"
 )
 
 type VerifyTokenByRPCService struct {
@@ -14,7 +15,14 @@ func NewVerifyTokenByRPCService(ctx context.Context) *VerifyTokenByRPCService {
 
 // Run create note info
 func (s *VerifyTokenByRPCService) Run(req *auth.VerifyTokenReq) (resp *auth.VerifyResp, err error) {
-	// Finish your business logic.
+	resp = &auth.VerifyResp{}
 
-	return
+	_, err = utils.ParseToken(req.Token)
+	if err != nil {
+		resp.Res = false
+		return resp, err
+	}
+
+	resp.Res = true
+	return resp, nil
 }

@@ -24,3 +24,12 @@ func VerifyTokenByRPC(ctx context.Context, req *auth.VerifyTokenReq, callOptions
 	}
 	return resp, nil
 }
+
+func RefreshTokenByRPC(ctx context.Context, req *auth.RefreshTokenReq, callOptions ...callopt.Option) (resp *auth.RefreshTokenResp, err error) {
+	resp, err = defaultClient.RefreshTokenByRPC(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "RefreshTokenByRPC call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}

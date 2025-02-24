@@ -3,6 +3,8 @@ package service
 import (
 	"Gomall/app/user/biz/dal/mysql"
 	"Gomall/app/user/biz/model"
+	"Gomall/app/user/infra/rpc"
+	auth_rpc "Gomall/rpc_gen/kitex_gen/auth"
 	user "Gomall/rpc_gen/kitex_gen/user"
 	"context"
 	"errors"
@@ -34,8 +36,16 @@ func (s *LoginService) Run(req *user.LoginReq) (resp *user.LoginResp, err error)
 		return nil, err
 	}
 
+	resp_rpc, err := rpc.AuthClient.DeliverTokenByRPC(s.ctx, &auth_rpc.DeliverTokenReq{
+		UserId: int32(row.ID),
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	resp = &user.LoginResp{
 		UserId: int32(row.ID),
+		Token:  resp_rpc.Token,
 	}
 
 	return resp, nil

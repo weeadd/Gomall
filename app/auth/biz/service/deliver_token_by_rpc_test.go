@@ -1,9 +1,9 @@
 package service
 
 import (
+	auth "Gomall/rpc_gen/kitex_gen/auth"
 	"context"
 	"testing"
-	auth "Gomall/rpc_gen/kitex_gen/auth"
 )
 
 func TestDeliverTokenByRPC_Run(t *testing.T) {
@@ -17,5 +17,4 @@ func TestDeliverTokenByRPC_Run(t *testing.T) {
 	t.Logf("resp: %v", resp)
 
 	// todo: edit your unit test
-
 }
