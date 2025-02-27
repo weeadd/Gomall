@@ -59,17 +59,17 @@ func (*Empty) Descriptor() ([]byte, []int) {
 	return file_cart_api_proto_rawDescGZIP(), []int{0}
 }
 
-type AddCartReq struct {
+type CartItem struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProductId  uint32 `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty" form:"productId"`
-	ProductNum int32  `protobuf:"varint,2,opt,name=product_num,json=productNum,proto3" json:"product_num,omitempty" form:"productNum"`
+	ProductId uint32 `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty" form:"product_id" query:"product_id"`
+	Quantity  int32  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty" form:"quantity" query:"quantity"`
 }
 
-func (x *AddCartReq) Reset() {
-	*x = AddCartReq{}
+func (x *CartItem) Reset() {
+	*x = CartItem{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_cart_api_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -77,13 +77,13 @@ func (x *AddCartReq) Reset() {
 	}
 }
 
-func (x *AddCartReq) String() string {
+func (x *CartItem) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddCartReq) ProtoMessage() {}
+func (*CartItem) ProtoMessage() {}
 
-func (x *AddCartReq) ProtoReflect() protoreflect.Message {
+func (x *CartItem) ProtoReflect() protoreflect.Message {
 	mi := &file_cart_api_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -95,23 +95,350 @@ func (x *AddCartReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddCartReq.ProtoReflect.Descriptor instead.
-func (*AddCartReq) Descriptor() ([]byte, []int) {
+// Deprecated: Use CartItem.ProtoReflect.Descriptor instead.
+func (*CartItem) Descriptor() ([]byte, []int) {
 	return file_cart_api_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AddCartReq) GetProductId() uint32 {
+func (x *CartItem) GetProductId() uint32 {
 	if x != nil {
 		return x.ProductId
 	}
 	return 0
 }
 
-func (x *AddCartReq) GetProductNum() int32 {
+func (x *CartItem) GetQuantity() int32 {
 	if x != nil {
-		return x.ProductNum
+		return x.Quantity
 	}
 	return 0
+}
+
+type AddItemReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId uint32    `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" query:"user_id"`
+	Item   *CartItem `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty" query:"cart_item"`
+}
+
+func (x *AddItemReq) Reset() {
+	*x = AddItemReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AddItemReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddItemReq) ProtoMessage() {}
+
+func (x *AddItemReq) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddItemReq.ProtoReflect.Descriptor instead.
+func (*AddItemReq) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AddItemReq) GetUserId() uint32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *AddItemReq) GetItem() *CartItem {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+type AddItemResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *AddItemResp) Reset() {
+	*x = AddItemResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AddItemResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddItemResp) ProtoMessage() {}
+
+func (x *AddItemResp) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddItemResp.ProtoReflect.Descriptor instead.
+func (*AddItemResp) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{3}
+}
+
+type GetCartReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId uint32 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" form:"user_id" query:"user_id"`
+}
+
+func (x *GetCartReq) Reset() {
+	*x = GetCartReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetCartReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCartReq) ProtoMessage() {}
+
+func (x *GetCartReq) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCartReq.ProtoReflect.Descriptor instead.
+func (*GetCartReq) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetCartReq) GetUserId() uint32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type GetCartResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Items []*CartItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty" form:"items" query:"items"`
+}
+
+func (x *GetCartResp) Reset() {
+	*x = GetCartResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetCartResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCartResp) ProtoMessage() {}
+
+func (x *GetCartResp) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCartResp.ProtoReflect.Descriptor instead.
+func (*GetCartResp) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetCartResp) GetItems() []*CartItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type Cart struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId uint32      `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" form:"user_id" query:"user_id"`
+	Items  []*CartItem `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty" form:"items" query:"items"`
+}
+
+func (x *Cart) Reset() {
+	*x = Cart{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Cart) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Cart) ProtoMessage() {}
+
+func (x *Cart) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Cart.ProtoReflect.Descriptor instead.
+func (*Cart) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *Cart) GetUserId() uint32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *Cart) GetItems() []*CartItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type EmptyCartReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId uint32 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" form:"user_id" query:"user_id"`
+}
+
+func (x *EmptyCartReq) Reset() {
+	*x = EmptyCartReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *EmptyCartReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmptyCartReq) ProtoMessage() {}
+
+func (x *EmptyCartReq) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmptyCartReq.ProtoReflect.Descriptor instead.
+func (*EmptyCartReq) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *EmptyCartReq) GetUserId() uint32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type EmptyCartResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *EmptyCartResp) Reset() {
+	*x = EmptyCartResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cart_api_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *EmptyCartResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmptyCartResp) ProtoMessage() {}
+
+func (x *EmptyCartResp) ProtoReflect() protoreflect.Message {
+	mi := &file_cart_api_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmptyCartResp.ProtoReflect.Descriptor instead.
+func (*EmptyCartResp) Descriptor() ([]byte, []int) {
+	return file_cart_api_proto_rawDescGZIP(), []int{8}
 }
 
 var File_cart_api_proto protoreflect.FileDescriptor
@@ -119,26 +446,51 @@ var File_cart_api_proto protoreflect.FileDescriptor
 var file_cart_api_proto_rawDesc = []byte{
 	0x0a, 0x0e, 0x63, 0x61, 0x72, 0x74, 0x5f, 0x61, 0x70, 0x69, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x12, 0x08, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x1a, 0x09, 0x61, 0x70, 0x69, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x6b,
-	0x0a, 0x0a, 0x41, 0x64, 0x64, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x12, 0x2c, 0x0a, 0x0a,
-	0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d,
-	0x42, 0x0d, 0xe2, 0xbb, 0x18, 0x09, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x49, 0x64, 0x52,
-	0x09, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x49, 0x64, 0x12, 0x2f, 0x0a, 0x0b, 0x70, 0x72,
-	0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x6e, 0x75, 0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x42,
-	0x0e, 0xe2, 0xbb, 0x18, 0x0a, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x4e, 0x75, 0x6d, 0x52,
-	0x0a, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x4e, 0x75, 0x6d, 0x32, 0x86, 0x01, 0x0a, 0x0b,
-	0x43, 0x61, 0x72, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3f, 0x0a, 0x0b, 0x41,
-	0x64, 0x64, 0x43, 0x61, 0x72, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x14, 0x2e, 0x61, 0x70, 0x69,
-	0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e, 0x41, 0x64, 0x64, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71,
-	0x1a, 0x0f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e, 0x45, 0x6d, 0x70, 0x74,
-	0x79, 0x22, 0x09, 0xd2, 0xc1, 0x18, 0x05, 0x2f, 0x63, 0x61, 0x72, 0x74, 0x12, 0x36, 0x0a, 0x07,
-	0x47, 0x65, 0x74, 0x43, 0x61, 0x72, 0x74, 0x12, 0x0f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61,
-	0x72, 0x74, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x0f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63,
-	0x61, 0x72, 0x74, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x09, 0xca, 0xc1, 0x18, 0x05, 0x2f,
-	0x63, 0x61, 0x72, 0x74, 0x42, 0x23, 0x5a, 0x21, 0x47, 0x6f, 0x6d, 0x61, 0x6c, 0x6c, 0x2f, 0x61,
-	0x70, 0x70, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x65, 0x6e,
-	0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x61, 0x72, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x45,
+	0x0a, 0x08, 0x43, 0x61, 0x72, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x72,
+	0x6f, 0x64, 0x75, 0x63, 0x74, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x09,
+	0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x71, 0x75, 0x61,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x71, 0x75, 0x61,
+	0x6e, 0x74, 0x69, 0x74, 0x79, 0x22, 0x69, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d,
+	0x52, 0x65, 0x71, 0x12, 0x24, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0d, 0x42, 0x0b, 0xb2, 0xbb, 0x18, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69,
+	0x64, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x35, 0x0a, 0x04, 0x69, 0x74, 0x65,
+	0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61,
+	0x72, 0x74, 0x2e, 0x43, 0x61, 0x72, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x42, 0x0d, 0xb2, 0xbb, 0x18,
+	0x09, 0x63, 0x61, 0x72, 0x74, 0x5f, 0x69, 0x74, 0x65, 0x6d, 0x52, 0x04, 0x69, 0x74, 0x65, 0x6d,
+	0x22, 0x0d, 0x0a, 0x0b, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x22,
+	0x25, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x12, 0x17, 0x0a,
+	0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06,
+	0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x37, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x43, 0x61, 0x72,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x12, 0x28, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e,
+	0x43, 0x61, 0x72, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22,
+	0x49, 0x0a, 0x04, 0x43, 0x61, 0x72, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64,
+	0x12, 0x28, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x12, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e, 0x43, 0x61, 0x72, 0x74, 0x49,
+	0x74, 0x65, 0x6d, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x27, 0x0a, 0x0c, 0x45, 0x6d,
+	0x70, 0x74, 0x79, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73,
+	0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x75, 0x73, 0x65,
+	0x72, 0x49, 0x64, 0x22, 0x0f, 0x0a, 0x0d, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x43, 0x61, 0x72, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x32, 0xe4, 0x01, 0x0a, 0x0b, 0x43, 0x61, 0x72, 0x74, 0x53, 0x65, 0x72,
+	0x76, 0x69, 0x63, 0x65, 0x12, 0x45, 0x0a, 0x07, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x12,
+	0x14, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e, 0x41, 0x64, 0x64, 0x49, 0x74,
+	0x65, 0x6d, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74,
+	0x2e, 0x41, 0x64, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x22, 0x0d, 0xd2, 0xc1,
+	0x18, 0x09, 0x2f, 0x63, 0x61, 0x72, 0x74, 0x2f, 0x61, 0x64, 0x64, 0x12, 0x3f, 0x0a, 0x07, 0x47,
+	0x65, 0x74, 0x43, 0x61, 0x72, 0x74, 0x12, 0x14, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72,
+	0x74, 0x2e, 0x47, 0x65, 0x74, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65, 0x71, 0x1a, 0x0f, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x0d, 0xca,
+	0xc1, 0x18, 0x09, 0x2f, 0x63, 0x61, 0x72, 0x74, 0x2f, 0x67, 0x65, 0x74, 0x12, 0x4d, 0x0a, 0x09,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x43, 0x61, 0x72, 0x74, 0x12, 0x16, 0x2e, 0x61, 0x70, 0x69, 0x2e,
+	0x63, 0x61, 0x72, 0x74, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65,
+	0x71, 0x1a, 0x17, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x63, 0x61, 0x72, 0x74, 0x2e, 0x45, 0x6d, 0x70,
+	0x74, 0x79, 0x43, 0x61, 0x72, 0x74, 0x52, 0x65, 0x73, 0x70, 0x22, 0x0f, 0xe2, 0xc1, 0x18, 0x0b,
+	0x2f, 0x63, 0x61, 0x72, 0x74, 0x2f, 0x65, 0x6d, 0x70, 0x74, 0x79, 0x42, 0x23, 0x5a, 0x21, 0x47,
+	0x6f, 0x6d, 0x61, 0x6c, 0x6c, 0x2f, 0x61, 0x70, 0x70, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x65,
+	0x72, 0x74, 0x7a, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x61, 0x72, 0x74,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -153,21 +505,33 @@ func file_cart_api_proto_rawDescGZIP() []byte {
 	return file_cart_api_proto_rawDescData
 }
 
-var file_cart_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_cart_api_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_cart_api_proto_goTypes = []interface{}{
-	(*Empty)(nil),      // 0: api.cart.Empty
-	(*AddCartReq)(nil), // 1: api.cart.AddCartReq
+	(*Empty)(nil),         // 0: api.cart.Empty
+	(*CartItem)(nil),      // 1: api.cart.CartItem
+	(*AddItemReq)(nil),    // 2: api.cart.AddItemReq
+	(*AddItemResp)(nil),   // 3: api.cart.AddItemResp
+	(*GetCartReq)(nil),    // 4: api.cart.GetCartReq
+	(*GetCartResp)(nil),   // 5: api.cart.GetCartResp
+	(*Cart)(nil),          // 6: api.cart.Cart
+	(*EmptyCartReq)(nil),  // 7: api.cart.EmptyCartReq
+	(*EmptyCartResp)(nil), // 8: api.cart.EmptyCartResp
 }
 var file_cart_api_proto_depIdxs = []int32{
-	1, // 0: api.cart.CartService.AddCartItem:input_type -> api.cart.AddCartReq
-	0, // 1: api.cart.CartService.GetCart:input_type -> api.cart.Empty
-	0, // 2: api.cart.CartService.AddCartItem:output_type -> api.cart.Empty
-	0, // 3: api.cart.CartService.GetCart:output_type -> api.cart.Empty
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: api.cart.AddItemReq.item:type_name -> api.cart.CartItem
+	1, // 1: api.cart.GetCartResp.items:type_name -> api.cart.CartItem
+	1, // 2: api.cart.Cart.items:type_name -> api.cart.CartItem
+	2, // 3: api.cart.CartService.AddItem:input_type -> api.cart.AddItemReq
+	4, // 4: api.cart.CartService.GetCart:input_type -> api.cart.GetCartReq
+	7, // 5: api.cart.CartService.EmptyCart:input_type -> api.cart.EmptyCartReq
+	3, // 6: api.cart.CartService.AddItem:output_type -> api.cart.AddItemResp
+	0, // 7: api.cart.CartService.GetCart:output_type -> api.cart.Empty
+	8, // 8: api.cart.CartService.EmptyCart:output_type -> api.cart.EmptyCartResp
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_cart_api_proto_init() }
@@ -189,7 +553,91 @@ func file_cart_api_proto_init() {
 			}
 		}
 		file_cart_api_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddCartReq); i {
+			switch v := v.(*CartItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AddItemReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AddItemResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetCartReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetCartResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Cart); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*EmptyCartReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cart_api_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*EmptyCartResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -207,7 +655,7 @@ func file_cart_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_cart_api_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

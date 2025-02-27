@@ -7,4 +7,10 @@ gen-api-auth:
 gen-api-user:
 	cwgo server --type HTTP --idl ../../idl/api/user_api.proto --service api --module Gomall/app/api -I ../../idl
 
+.PHONY: gen-api-order
+gen-api-order:
+	cwgo server --type HTTP --idl ../../idl/api/order_api.proto --service api --module Gomall/app/api -I ../../idl
 
+.PHONY: gen-api-cart
+gen-api-cart:
+	cwgo server --type HTTP --idl ../../idl/api/cart_api.proto --service api --module Gomall/app/api -I ../../idl

@@ -12,12 +12,12 @@ import (
 )
 
 var (
-	CartClient cartservice.Client
-	ProductClient productcatalogservice.Client
-	once sync.Once
+	CartClient 		cartservice.Client
+	ProductClient 	productcatalogservice.Client
+	once 			sync.Once
 	ServiceName = conf.GetConf().Kitex.Service
 	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
-	err	error
+	err				error
 ) 
 
 func InitClient() {

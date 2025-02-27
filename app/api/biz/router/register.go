@@ -5,6 +5,7 @@ package router
 import (
 	cart "Gomall/app/api/biz/router/cart"
 	category "Gomall/app/api/biz/router/category"
+	order "Gomall/app/api/biz/router/order"
 	product "Gomall/app/api/biz/router/product"
 	user "Gomall/app/api/biz/router/user"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -14,6 +15,8 @@ import (
 func GeneratedRegister(r *server.Hertz) {
 	//INSERT_POINT: DO NOT DELETE THIS LINE!
 	cart.Register(r)
+
+	order.Register(r)
 
 	category.Register(r)
 
