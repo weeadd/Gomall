@@ -6,6 +6,7 @@ import (
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
 	"Gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"Gomall/rpc_gen/kitex_gen/user/userservice"
+	"Gomall/rpc_gen/kitex_gen/cart/cartservice"
 	"sync"
 
 	"github.com/cloudwego/kitex/client"
@@ -15,6 +16,7 @@ import (
 var (
 	UserClient    userservice.Client
 	AuthClient    authservice.Client
+	CartClient	  cartservice.Client
 	once          sync.Once
 	ProductClient productcatalogservice.Client
 )
@@ -42,5 +44,13 @@ func initProductClient() {
 	apiutils.MustHandleError(err)
 
 	ProductClient, err = productcatalogservice.NewClient("product", client.WithResolver(r))
+	apiutils.MustHandleError(err)
+}
+
+func initCartClient() {
+	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
+	apiutils.MustHandleError(err)
+
+	CartClient, err = cartservice.NewClient("cart", client.WithResolver(r))
 	apiutils.MustHandleError(err)
 }
