@@ -21,7 +21,7 @@ service OrderService {
 }   
 
 message Address {
-  string street_address = 1;
+  string street_address = 1 ;
   string city = 2;
   string state = 3;
   string country = 4;
@@ -29,12 +29,12 @@ message Address {
 }
 
 message PlaceOrderReq {
-  uint32 user_id = 1;
-  string user_currency = 2;
+  uint32 user_id = 1 [(api.body) = "user_id"];
+  string user_currency = 2 [(api.body) = "user_currency"];
 
-  Address address = 3;
-  string email = 4;
-  repeated OrderItem order_items = 5;
+  Address address = 3 [(api.body) = "address"];
+  string email = 4 [(api.body) = "email"];
+  repeated OrderItem order_items = 5 [(api.body) = "order_items"];
 }
 
 message OrderItem {
@@ -51,7 +51,7 @@ message PlaceOrderResp {
 }
 
 message ListOrderReq {
-  uint32 user_id = 1;
+  uint32 user_id = 1 [(api.body) = "user_id"];
 }
 
 message Order {
@@ -69,8 +69,8 @@ message ListOrderResp {
 }
 
 message MarkOrderPaidReq {
-  uint32 user_id = 1;
-  string order_id = 2;
+  uint32 user_id = 1 [(api.body) = "user_id"];
+  string order_id = 2 [(api.body) = "order_id"];
 }
 
 message MarkOrderPaidResp {}

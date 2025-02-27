@@ -4,6 +4,7 @@ import (
 	"Gomall/app/api/conf"
 	apiutils "Gomall/app/api/utils"
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
+	"Gomall/rpc_gen/kitex_gen/order/orderservice"
 	"Gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"Gomall/rpc_gen/kitex_gen/user/userservice"
 	"sync"
@@ -17,12 +18,14 @@ var (
 	AuthClient    authservice.Client
 	once          sync.Once
 	ProductClient productcatalogservice.Client
+	OrderClient   orderservice.Client
 )
 
 func Init() {
 	once.Do(func() {
 		initUserClient()
 		initProductClient()
+		initOrderClient()
 	})
 }
 
@@ -42,5 +45,13 @@ func initProductClient() {
 	apiutils.MustHandleError(err)
 
 	ProductClient, err = productcatalogservice.NewClient("product", client.WithResolver(r))
+	apiutils.MustHandleError(err)
+}
+
+func initOrderClient() {
+	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
+	apiutils.MustHandleError(err)
+
+	OrderClient, err = orderservice.NewClient("order", client.WithResolver(r))
 	apiutils.MustHandleError(err)
 }
