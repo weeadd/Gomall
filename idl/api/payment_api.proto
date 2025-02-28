@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package api.payment;
+import "api.proto";
+
+option go_package = "api/payment";
+
+
+service PaymentService {
+  rpc Charge(ChargeReq) returns (ChargeResp) {
+      option (api.post) = "/payment/charge";
+    }
+}
+
+message CreditCardInfo {
+  string credit_card_number = 1;
+  int32 credit_card_cvv = 2;
+  int32 credit_card_expiration_year = 3;
+  int32 credit_card_expiration_month = 4;
+}
+
+message ChargeReq {
+  float amount = 1  [(api.body) = "amount"];
+  CreditCardInfo credit_card = 2  [(api.body) = "credit_card"];
+  string order_id = 3  [(api.body) = "order_id"];
+  uint32 user_id = 4  [(api.body) = "user_id"];
+}
+
+message ChargeResp {
+  string transaction_id = 1;
+}

@@ -11,3 +11,6 @@ gen-api-user:
 gen-api-order:
 	cwgo server --type HTTP --idl ../../idl/api/order_api.proto --service api --module Gomall/app/api -I ../../idl
 
+.PHONY: gen-api-payment
+gen-api-order:
+	cwgo server --type HTTP --idl ../../idl/api/payment_api.proto --service api --module Gomall/app/api -I ../../idl
