@@ -32,12 +32,14 @@ gen-auth:
 .PHONY: gen-order
 gen-order:
 	@cd rpc_gen && cwgo client --type RPC --service order --module Gomall/rpc_gen -I ../idl --idl ../idl/order.proto
-	@cd app/pr order && cwgo server --type RPC --service order --module Gomall/app/order --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/order.proto
+	@cd app/order && cwgo server --type RPC --service order --module Gomall/app/order --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/order.proto
 
 .PHONY: gen-cart
 gen-cart:
 	@cd rpc_gen && cwgo client --type RPC --service cart --module Gomall/rpc_gen -I ../idl --idl ../idl/cart.proto
 	@cd app/cart && cwgo server --type RPC --service cart --module Gomall/app/cart --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/cart.proto
 
-
-
+.PHONY: gen-payment
+gen-payment:
+	@cd rpc_gen && cwgo client --type RPC --service payment --module Gomall/rpc_gen -I ../idl --idl ../idl/payment.proto
+	@cd app/payment && cwgo server --type RPC --service payment --module Gomall/app/payment --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/payment.proto

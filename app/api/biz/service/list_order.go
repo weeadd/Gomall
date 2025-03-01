@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	convert "Gomall/app/api/biz/utils"
 	order "Gomall/app/api/hertz_gen/api/order"
@@ -27,7 +26,6 @@ func (h *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-	fmt.Println("req:", req)
 	resp_rpc, err := rpc.OrderClient.ListOrder(h.Context, &order_rpc.ListOrderReq{
 		UserId: req.UserId,
 	})
@@ -48,7 +46,6 @@ func (h *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 			Email:        o.Email,                                     // 直接赋值 Email
 			CreatedAt:    o.CreatedAt,                                 // 直接赋值 CreatedAt
 		})
-		fmt.Println("orders:", orders)
 	}
 
 	resp = &order.ListOrderResp{
