@@ -6,6 +6,9 @@ import (
 
 	"Gomall/app/order/biz/dal"
 	"Gomall/app/order/conf"
+	"Gomall/common/mtl"
+	"Gomall/common/serversuite"
+
 	"Gomall/rpc_gen/kitex_gen/order/orderservice"
 
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -14,13 +17,19 @@ import (
 	"github.com/joho/godotenv"
 
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	consul "github.com/kitex-contrib/registry-consul"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
+var (
+	ServiceName  = conf.GetConf().Kitex.Service
+	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
+)
+
 func main() {
 	_ = godotenv.Load()
+
+	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
 
 	dal.Init()
 
@@ -41,12 +50,11 @@ func kitexInit() (opts []server.Option) {
 		panic(err)
 	}
 
-	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		klog.Errorf("new consul registry failed, err:%v", err)
-	}
-
-	opts = append(opts, server.WithServiceAddr(addr), server.WithRegistry(r))
+	// consul
+	opts = append(opts, server.WithServiceAddr(addr), server.WithSuite(serversuite.CommonServerSuite{
+		CurrentServiceName: ServiceName,
+		RegistryAddr:       RegistryAddr,
+	}))
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
