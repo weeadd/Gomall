@@ -2,9 +2,13 @@ package utils
 
 import (
 	cart "Gomall/app/api/hertz_gen/api/cart"
+	chekcout "Gomall/app/api/hertz_gen/api/checkout"
 	order "Gomall/app/api/hertz_gen/api/order"
+	payment "Gomall/app/api/hertz_gen/api/payment"
 	cart_rpc "Gomall/rpc_gen/kitex_gen/cart"
+	chekcout_rpc "Gomall/rpc_gen/kitex_gen/checkout"
 	order_rpc "Gomall/rpc_gen/kitex_gen/order"
+	payment_rpc "Gomall/rpc_gen/kitex_gen/payment"
 )
 
 // Address 类型转换
@@ -21,12 +25,40 @@ func ConvertAddress(addr *order.Address) *order_rpc.Address {
 	}
 }
 
+// Address 类型转换
+func ConvertCheckoutAddress(addr *chekcout.Address) *chekcout_rpc.Address {
+	if addr == nil {
+		return nil
+	}
+	return &chekcout_rpc.Address{
+		StreetAddress: addr.StreetAddress,
+		City:          addr.City,
+		Country:       addr.Country,
+		State:         addr.State,
+		ZipCode:       addr.ZipCode,
+	}
+}
+
 // Address 类型转换（从 RPC 响应转换回 API）
 func ConvertAddressBack(addr *order_rpc.Address) *order.Address {
 	if addr == nil {
 		return nil
 	}
 	return &order.Address{
+		StreetAddress: addr.StreetAddress,
+		City:          addr.City,
+		Country:       addr.Country,
+		State:         addr.State,
+		ZipCode:       addr.ZipCode,
+	}
+}
+
+// Address 类型转换（从 RPC 响应转换回 API）
+func ConvertCheckoutAddressBack(addr *chekcout_rpc.Address) *chekcout.Address {
+	if addr == nil {
+		return nil
+	}
+	return &chekcout.Address{
 		StreetAddress: addr.StreetAddress,
 		City:          addr.City,
 		Country:       addr.Country,
@@ -84,5 +116,18 @@ func ConvertCartItemBack(item *cart_rpc.CartItem) *cart.CartItem {
 	return &cart.CartItem{
 		ProductId: item.ProductId,
 		Quantity:  item.Quantity,
+	}
+}
+
+// CreditCard 类型转换
+func ConvertCreditCard(card *payment.CreditCardInfo) *payment_rpc.CreditCardInfo {
+	if card == nil {
+		return nil
+	}
+	return &payment_rpc.CreditCardInfo{
+		CreditCardNumber:          card.CreditCardNumber,
+		CreditCardCvv:             card.CreditCardCvv,
+		CreditCardExpirationYear:  card.CreditCardExpirationYear,
+		CreditCardExpirationMonth: card.CreditCardExpirationMonth,
 	}
 }
