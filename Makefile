@@ -43,3 +43,9 @@ gen-cart:
 gen-payment:
 	@cd rpc_gen && cwgo client --type RPC --service payment --module Gomall/rpc_gen -I ../idl --idl ../idl/payment.proto
 	@cd app/payment && cwgo server --type RPC --service payment --module Gomall/app/payment --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/payment.proto
+	
+.PHONY: gen-checkout
+gen-checkout:
+	@cd rpc_gen && cwgo client --type RPC --service checkout --module Gomall/rpc_gen -I ../idl --idl ../idl/checkout.proto
+	@cd app/checkout && cwgo server --type RPC --service checkout --module Gomall/app/checkout --pass "-use Gomall/rpc_gen/kitex_gen" -I ../../idl --idl ../../idl/checkout.proto
+

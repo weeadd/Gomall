@@ -4,11 +4,12 @@ import (
 	"Gomall/app/api/conf"
 	apiutils "Gomall/app/api/utils"
 	"Gomall/rpc_gen/kitex_gen/auth/authservice"
+	"Gomall/rpc_gen/kitex_gen/cart/cartservice"
+	"Gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
 	"Gomall/rpc_gen/kitex_gen/order/orderservice"
 	"Gomall/rpc_gen/kitex_gen/payment/paymentservice"
 	"Gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"Gomall/rpc_gen/kitex_gen/user/userservice"
-	"Gomall/rpc_gen/kitex_gen/cart/cartservice"
 	"sync"
 
 	"github.com/cloudwego/kitex/client"
@@ -16,13 +17,14 @@ import (
 )
 
 var (
-	UserClient    userservice.Client
-	AuthClient    authservice.Client
-	CartClient	  cartservice.Client
-	once          sync.Once
-	ProductClient productcatalogservice.Client
-	OrderClient   orderservice.Client
-	PaymentClient paymentservice.Client
+	UserClient     userservice.Client
+	AuthClient     authservice.Client
+	CartClient     cartservice.Client
+	once           sync.Once
+	ProductClient  productcatalogservice.Client
+	OrderClient    orderservice.Client
+	PaymentClient  paymentservice.Client
+	CheckoutClient checkoutservice.Client
 )
 
 func Init() {
@@ -32,6 +34,7 @@ func Init() {
 		initCartClient()
 		initOrderClient()
 		initPaymentClient()
+		initCheckoutClient()
 	})
 }
 
@@ -69,10 +72,19 @@ func initOrderClient() {
 	OrderClient, err = orderservice.NewClient("order", client.WithResolver(r))
 	apiutils.MustHandleError(err)
 }
+
 func initPaymentClient() {
 	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
 	apiutils.MustHandleError(err)
 
 	PaymentClient, err = paymentservice.NewClient("payment", client.WithResolver(r))
+	apiutils.MustHandleError(err)
+}
+
+func initCheckoutClient() {
+	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
+	apiutils.MustHandleError(err)
+
+	CheckoutClient, err = checkoutservice.NewClient("checkout", client.WithResolver(r))
 	apiutils.MustHandleError(err)
 }

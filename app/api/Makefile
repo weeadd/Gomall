@@ -14,6 +14,11 @@ gen-api-order:
 .PHONY: gen-api-cart
 gen-api-cart:
 	cwgo server --type HTTP --idl ../../idl/api/cart_api.proto --service api --module Gomall/app/api -I ../../idl
+
 .PHONY: gen-api-payment
 gen-api-order:
 	cwgo server --type HTTP --idl ../../idl/api/payment_api.proto --service api --module Gomall/app/api -I ../../idl
+
+.PHONY: gen-api-checkout
+gen-api-checkout:
+	cwgo server --type HTTP --idl ../../idl/api/checkout_api.proto --service api --module Gomall/app/api -I ../../idl

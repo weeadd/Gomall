@@ -1,15 +1,13 @@
 syntax = "proto3";
 
-package order;
+package  checkout;
 
-import "cart.proto";
+import "payment.proto";
 
-option go_package = "order";
+option go_package = "/checkout";
 
-service OrderService {
-  rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderResp) {}
-  rpc ListOrder(ListOrderReq) returns (ListOrderResp) {}
-  rpc MarkOrderPaid(MarkOrderPaidReq) returns (MarkOrderPaidResp) {}
+service CheckoutService {
+  rpc Checkout(CheckoutReq) returns (CheckoutResp) {}
 }
 
 message Address {
@@ -17,52 +15,19 @@ message Address {
   string city = 2;
   string state = 3;
   string country = 4;
-  int32 zip_code = 5;
+  string zip_code = 5;
 }
 
-message PlaceOrderReq {
+message CheckoutReq {
   uint32 user_id = 1;
-  string user_currency = 2;
-
-  Address address = 3;
+  string firstname = 2;
+  string lastname = 3;
   string email = 4;
-  repeated OrderItem order_items = 5;
-}
-
-message OrderItem {
-  cart.CartItem item = 1;
-  float cost = 2;
-}
-
-message OrderResult {
-  string order_id = 1;
-}
-
-message PlaceOrderResp {
-  OrderResult order = 1;
-}
-
-message ListOrderReq {
-  uint32 user_id = 1;
-}
-
-message Order {
-  repeated OrderItem order_items = 1;
-  string order_id = 2;
-  uint32 user_id = 3;
-  string user_currency = 4;
   Address address = 5;
-  string email = 6;
-  int32 created_at = 7;
+  payment.CreditCardInfo credit_card = 6;
 }
 
-message ListOrderResp {
-  repeated Order orders = 1;
+message CheckoutResp {
+  string order_id = 1;
+  string transaction_id = 2;
 }
-
-message MarkOrderPaidReq {
-  uint32 user_id = 1;
-  string order_id = 2;
-}
-
-message MarkOrderPaidResp {}
