@@ -9,7 +9,7 @@ replace Gomall/rpc_gen => ../../rpc_gen
 replace Gomall/common => ../../common
 
 require (
-	Gomall/common v0.0.0
+	Gomall/common v0.0.0-00010101000000-000000000000
 	Gomall/rpc_gen v0.0.0-00010101000000-000000000000
 	github.com/cloudwego/hertz v0.9.5
 	github.com/cloudwego/kitex v0.12.2
