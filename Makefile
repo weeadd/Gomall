@@ -1,3 +1,16 @@
+# 定义变量
+SERVICES := api user auth product cart order payment checkout
+
+# 运行项目
+.PHONY: run
+run:
+	@echo "Starting all microservices..."
+	@for service in $(SERVICES); do \
+		echo "Starting $$service..."; \
+		cd app/$$service && go run main.go & \
+	done
+	@echo "All microservices started!"
+
 
 # api 指令请在api目录下执行
 .PHONY: gen-api-auth
