@@ -11,6 +11,8 @@ import (
 	"Gomall/common/serversuite"
 	"Gomall/rpc_gen/kitex_gen/cart/cartservice"
 
+	"github.com/joho/godotenv"
+
 	"github.com/cloudwego/kitex/pkg/klog"
 	_ "github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -20,11 +22,13 @@ import (
 )
 
 var (
-	ServiceName = conf.GetConf().Kitex.Service
+	ServiceName  = conf.GetConf().Kitex.Service
 	RegistryAddr = conf.GetConf().Registry.RegistryAddress[0]
 )
 
 func main() {
+	_ = godotenv.Load()
+
 	mtl.InitMetric(ServiceName, conf.GetConf().Kitex.MetricsPort, RegistryAddr)
 	dal.Init()
 	rpc.InitClient()
@@ -46,9 +50,8 @@ func kitexInit() (opts []server.Option) {
 	}
 	opts = append(opts, server.WithServiceAddr(addr), server.WithSuite(serversuite.CommonServerSuite{
 		CurrentServiceName: ServiceName,
-		RegistryAddr:		RegistryAddr,
+		RegistryAddr:       RegistryAddr,
 	}))
-
 
 	// klog
 	logger := kitexlogrus.NewLogger()

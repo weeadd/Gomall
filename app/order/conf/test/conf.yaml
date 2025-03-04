@@ -15,7 +15,7 @@ registry:
   password: ""
 
 mysql:
-  dsn: "root:Aa123456*@tcp(47.108.239.154:3406)/order?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "%s:%s@tcp(%s:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
   address: "127.0.0.1:6379"

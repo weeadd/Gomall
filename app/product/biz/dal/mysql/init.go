@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cloudwego/biz-demo/gomall/app/product/biz/model"
-	"github.com/cloudwego/biz-demo/gomall/app/product/conf"
+	"Gomall/app/product/biz/model"
+	"Gomall/app/product/conf"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
